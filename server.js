@@ -1,6 +1,7 @@
 const app = require('express')();
 const server = require("http").createServer(app);
 const cors = require('cors');
+const path = require('path');
 
 const io = require("socket.io")(server, {
     cors:{
@@ -13,16 +14,11 @@ const io = require("socket.io")(server, {
 app.use(cors());
 
 const PORT = process.env.PORT || 5000;
-if(process.env.NODE_ENV === 'production') {
-    // set static folder
-    app.use(express.static('client/build'));
-    app.get('*', (req, res) => {
-      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-    });
-  }
-else{
-    app.get('/', (req, res)=> res.send('Server is running'));
-}
+
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+  });
 
 
 
